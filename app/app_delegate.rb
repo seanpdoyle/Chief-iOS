@@ -1,8 +1,8 @@
-class AppDelegate
-  def application(application, didFinishLaunchingWithOptions:launchOptions)
-    @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.rootViewController = SpotsController.alloc.init
-    @window.makeKeyAndVisible
-    true
+class AppDelegate < PM::Delegate
+  include PM::Styling
+  status_bar true, animation: :true
+
+  def on_load(app, options)
+    open SpotsScreen.new(nav_bar:true)
   end
 end
