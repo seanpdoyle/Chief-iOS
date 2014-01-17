@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Setup the application
+
+set -e
+
+bundle install
+
+bin/pod setup
+
+bin/rake pod:install
