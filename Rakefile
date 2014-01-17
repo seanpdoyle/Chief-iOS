@@ -9,6 +9,12 @@ require 'bubble-wrap'
 require 'bubble-wrap/location'
 require 'motion_model'
 
+require 'formotion'
+
+require 'sugarcube-image'
+require 'sugarcube-nsdata'
+require 'sugarcube-uikit'
+
 begin
   require 'bundler'
   Bundler.require

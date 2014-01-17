@@ -1,33 +1,24 @@
 class SpotsController < UIViewController
   CELL_IDENTIFIER = "cell_identifier"
+  CELL_DEFAULTS = {accessory: :disclosure, selection: :blue}.freeze
 
   def viewDidLoad
-    @spots = []
+    load_spots
+
     @table = UITableView.alloc.initWithFrame(view.frame, style:UITableViewStylePlain)
     @table.dataSource = self
     view.addSubview(@table)
-
-    load_spots
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    placeholder = UIImage.imageNamed("placeholder.png")
-
-    cell = tableView.dequeueReusableCellWithIdentifier(CELL_IDENTIFIER)
-
-    unless cell
-      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle,
-                              reuseIdentifier:CELL_IDENTIFIER)
-
-      cell.selectionStyle = UITableViewCellSelectionStyleNone;
-      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    end
-
     spot = @spots[indexPath.row]
 
-    cell.tap do |tableCell|
-      tableCell.text = spot.name
-      tableCell.imageView.setImageWithURL(spot.small_photo, placeholderImage:placeholder)
+    UITableViewCell.default('cell_identifier', CELL_DEFAULTS).tap do |cell|
+      cell.imageView.setImageWithURL \
+        spot.small_photo_url,
+        placeholderImage:"placeholder.png".uiimage
+
+      cell.textLabel.text = spot.name
     end
   end
 
@@ -38,6 +29,7 @@ class SpotsController < UIViewController
   private
 
   def load_spots
+    @spots = []
     GetsSpots.alloc.init.near(nil) do |spots|
       @spots = spots
       @table.reloadData

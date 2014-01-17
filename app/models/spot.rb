@@ -14,15 +14,15 @@ class Spot
     end
   end
 
-  def small_photo
+  def small_photo_url
     photos[:small].nsurl
   end
 
-  def medium_photo
+  def medium_photo_url
     photos[:medium].nsurl
   end
 
-  def large_photo
+  def large_photo_url
     photos[:large].nsurl
   end
 end
