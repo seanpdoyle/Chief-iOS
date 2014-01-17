@@ -14,6 +14,14 @@ class Spot
     end
   end
 
+  def location
+    @location ||= CLLocation.alloc.initWithLatitude(lat, longitude:lng)
+  end
+
+  def distanceFrom(fromLocation)
+    location.distanceFromLocation(fromLocation)
+  end
+
   def small_photo_url
     photos[:small].nsurl
   end
@@ -24,5 +32,10 @@ class Spot
 
   def large_photo_url
     photos[:large].nsurl
+  end
+
+  def dealloc
+    @location.release if @location
+    super
   end
 end

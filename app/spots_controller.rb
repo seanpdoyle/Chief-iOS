@@ -4,6 +4,7 @@ class SpotsController < UIViewController
 
   def viewDidLoad
     load_spots
+    load_location
 
     @table = UITableView.alloc.initWithFrame(view.frame, style:UITableViewStylePlain)
     @table.dataSource = self
@@ -13,10 +14,16 @@ class SpotsController < UIViewController
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     spot = @spots[indexPath.row]
 
-    UITableViewCell.default('cell_identifier', CELL_DEFAULTS).tap do |cell|
+    UITableViewCell.subtitle('cell_identifier', CELL_DEFAULTS).tap do |cell|
       cell.imageView.setImageWithURL \
         spot.small_photo_url,
         placeholderImage:"placeholder.png".uiimage
+
+      if @location
+        distance = spot.distanceFrom(@location)
+        distanceString = distance.in_miles.string_with_style(:decimal)
+        cell.detailTextLabel.text = "#{distanceString} miles away"
+      end
 
       cell.textLabel.text = spot.name
     end
@@ -28,11 +35,27 @@ class SpotsController < UIViewController
 
   private
 
+  def load_location
+    BW::Location.get_significant do |result|
+      @location = result[:to]
+      @table.reloadData
+    end
+  end
+
   def load_spots
     @spots = []
-    GetsSpots.alloc.init.near(nil) do |spots|
+    @getsSpots ||= GetsSpots.alloc.init
+    @getsSpots.near(nil) do |spots|
       @spots = spots
       @table.reloadData
     end
+  end
+
+  def dealloc
+    @spots.map(&:release)
+    @getsSpots.release
+    @location.release
+    @table.release
+    super
   end
 end

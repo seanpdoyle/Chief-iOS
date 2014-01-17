@@ -6,6 +6,7 @@ require 'rubygems'
 require 'motion-cocoapods'
 
 require 'bubble-wrap'
+require 'bubble-wrap/http'
 require 'bubble-wrap/location'
 require 'motion_model'
 
