@@ -1,5 +1,7 @@
 # Chief iOS
 
+[![Code Climate](https://codeclimate.com/github/seanpdoyle/Chief-iOS.png)](https://codeclimate.com/github/seanpdoyle/Chief-iOS)
+
 ## Installation
 
 First, you'll need [RubyMotion].
