@@ -3,22 +3,17 @@ class SpotsScreen < PM::Screen
 
   def on_load
     set_attributes self.view, background_color: "#ffffff".uicolor
+  end
 
-    @scroll = add UIScrollView.alloc.initWithFrame(self.view.bounds)
+  def will_appear
+    @scroll ||= add UIScrollView.alloc.initWithFrame(self.view.bounds)
+    @scroll.frame = self.view.bounds
+
+    layout_scroll
 
     GetsSpots.alloc.init.near(nil) do |spots|
       load_spots(spots)
-      layout_scroll
     end
-  end
-
-  def will_appear
-    @scroll.frame = self.view.bounds
-    layout_scroll
-  end
-
-  def will_appear
-    set_attributes self.view, background_color: "#ffffff".uicolor
   end
 
   private
@@ -26,9 +21,13 @@ class SpotsScreen < PM::Screen
   def load_spots(spots)
     @spots = spots
     @spots.each_with_index do |spot, index|
-      frame = frame_for(index)
-      add_to @scroll, SpotView.alloc.initWithFrame(frame, andSpot: spot)
+      spotView = add_to @scroll, SpotCard.alloc.initWithFrame(frame_for(index), andSpot: spot)
+
+      spotView.when_tapped do
+        open SpotScreen.new(nav_bar: true, spot: spot)
+      end
     end
+    layout_scroll
   end
 
   def layout_scroll

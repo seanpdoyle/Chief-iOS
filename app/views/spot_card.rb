@@ -1,4 +1,4 @@
-class SpotView < UIView
+class SpotCard < UIView
   include PM::Styling
 
   attr_reader :spot
@@ -25,7 +25,7 @@ class SpotView < UIView
       background_color: "#F6F6F6".uicolor,
       layer: {
         shadow_radius: 4.0,
-        shadow_opacity: 0.4,
+        shadow_opacity: 0.2,
         shadow_color: :black.uicolor.CGColor
       }
     self
