@@ -28,6 +28,7 @@ Motion::Project::App.setup do |app|
   app.identifier = 'com.chief'
 
   app.pods do
+    pod 'Bravo'
     pod 'SDWebImage'
   end
 end
